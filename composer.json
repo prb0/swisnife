@@ -1,0 +1,21 @@
+{
+    "name": "bondar/swisnife",
+    "description": "Swiss Knife",
+    "require": {
+        "amocrm/amocrm-api-library": "^0.13.0",
+        "yandex-market/yandex-market-php-oauth": "*",
+        "monolog/monolog": "^2.9"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Bondar\\Swisnife\\": "src/Bondar/Swisnife"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bondar Artem",
+            "email": "artembondar1991@gmail.com"
+        }
+    ]
+}
