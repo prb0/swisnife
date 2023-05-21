@@ -3,8 +3,8 @@
 namespace Bondar\Swisnife;
 
 use \Monolog\Logger;
-use \Monolog\Handler\FirePHPHandler;
 use \Monolog\Handler\StreamHandler;
+use Bondar\Swisnife\Config\Config;
 use Bondar\Swisnife\Helpers\CaseSwitcher;
 
 class App
@@ -12,6 +12,8 @@ class App
 	public static function exec(array $thingsToDo) : void
 	{
 		try {
+			Config::setEnvVars();
+
 			foreach ($thingsToDo as $t) {
 				$className = static::getHandlerPath($t['module']);
 
@@ -48,8 +50,6 @@ class App
 				. 'main.log',
 			Logger::WARNING
 		));
-		$log->pushHandler(new FirePHPHandler());
-
 		$log->warning($msg);
 	}
 }

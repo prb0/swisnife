@@ -15,17 +15,24 @@ class Config
 			. DIRECTORY_SEPARATOR
 			. '..'
 			. DIRECTORY_SEPARATOR
-			. '.env';
+			. '..'
+			. DIRECTORY_SEPARATOR
+			. '..'
+			. DIRECTORY_SEPARATOR
+			. '.ENV'
 		);
 
 		foreach (explode(PHP_EOL, $config) as $line) {
-			if (strpos($line, '#') === 0) {
+			if (strpos($line, '#') === 0 || empty($line)) {
 				continue;
 			}
-
+// echo $line;
+// echo "<br>";
+// echo trim($line);
+// echo "<br>";
+			// $line = trim($line);
 			if (!putenv($line)) {
 				throw new ConfigException('invalid env variable assignment');
-				
 			}
 		}
 	}

@@ -15,14 +15,18 @@ $thingsToDo = [
 		'module' => 'ya_metrika',
 		'action' => 'goal',
 		'events' => [
-			'roiform' => [
-				'_ym_uid' => '1684498026684853526',
-				'datetime' => '1684499227',
-				'price' => '0.00',
+			'rtest' => [
+				'_ym_uid' => '1684659680890579402',
+				'datetime' => time(),
+				'price' => '1',
 				'currency' => 'RUB',
 			],
 		],
 	],
+	// [
+	// 	'module' => 'ya_metrika',
+	// 	'action' => 'oauth',
+	// ],
 ];
 
 App::exec($thingsToDo);

@@ -19,21 +19,11 @@ class TargetTrigger
 	// Имя отправляемого файла с событиями :
 	private static $fileName = __DIR__ . DIRECTORY_SEPARATOR . 'file.csv';
 
-	// Номер счетчика :
-	private static $counterId = '53244133';
-
-	// OAuth-токен :
-	private static $accessToken = 'y0_AgAAAABrI-jXAAnupQAAAADjgx7DGz9vGOW1QmCFRGGrkoQwkMTJUiY';
-
 	// Тип идентификаторов посетителей – CLIENT_ID, USER_ID или YCLID :
 	private static $clientIdType = 'CLIENT_ID';
 
 	public static function sendEvents($events)
 	{
-		echo "<pre>";
-		print_r($events);
-		return;
-		
 		$tableStr = 'ClientId,Target,DateTime,Price,Currency' . PHP_EOL;
 
 		foreach ($events as $eName => $eData) {
@@ -59,20 +49,31 @@ file_put_contents(__DIR__ . '/log.log', print_r($tableStr, true) . PHP_EOL, FILE
 
 	private static function send()
 	{
+		// $data = [
+		// 	'clitype' => static::$clientIdType,
+		// 	'ym_counter_id' => getenv('ym_counter_id'),
+		// 	'ym_access_token' => getenv('ym_access_token'),
+		// 	'fileName' => realpath(static::$fileName),
+		// ];
+		// echo "<pre>";
+		// print_r($data);die;
 		$curl = curl_init('https://api-metrika.yandex.ru/management/v1/counter/'
-			. static::$counterId
+			. getenv('ym_counter_id')
 			. '/offline_conversions/upload?client_id_type='
 			. static::$clientIdType);
 
 		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, array('file' => new CURLFile(realpath(static::$fileName))));
+		curl_setopt($curl, CURLOPT_POSTFIELDS, array('file' => new \CURLFile(realpath(static::$fileName))));
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data', 'Authorization: OAuth ' . static::$accessToken));
+		curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data', 'Authorization: OAuth ' . getenv('ym_access_token')));
+file_put_contents(__DIR__ . '/log.log', print_r($curl, true) . PHP_EOL, FILE_APPEND);
 
 		$result = curl_exec($curl);
+		$error = curl_errno($curl);
+file_put_contents(__DIR__ . '/log.log', print_r($error, true) . PHP_EOL, FILE_APPEND);
 
-file_put_contents(__DIR__ . '/log.log', print_r($result, true) . PHP_EOL, FILE_APPEND);
+file_put_contents(__DIR__ . '/log.log', $result . PHP_EOL, FILE_APPEND);
 
 		curl_close($curl);
 	}
